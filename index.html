@@ -179,12 +179,17 @@
               </div>
               <div style="background:#EFE2BE;padding:20px;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-start">
                 <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:22px">{{ show.price }}</span>
-                <a href="#" onClick="{{ noop }}" style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 18px;border:2px solid #D42226" style-hover="background:#0C0B09;border-color:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.shows.buy }}</a>
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;color:#6B6455">{{ t.shows.extNote }}</span>
+                <sc-if value="{{ show.hasTickets }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ show.ticketHref }}" target="{{ show.ticketTarget }}" rel="noopener" onClick="{{ show.ticketClick }}" style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 18px;border:2px solid #D42226" style-hover="background:#0C0B09;border-color:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.shows.buy }}</a>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;color:#6B6455">{{ t.shows.extNote }}</span>
+                </sc-if>
               </div>
             </article>
           </sc-for>
         </div>
+        <sc-if value="{{ showsEmpty }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;padding:22px;border:3px solid #0C0B09;background:#EFE2BE;font-family:'Oswald',sans-serif;font-weight:600;font-size:18px;text-transform:uppercase;line-height:1.3">{{ t.shows.emptyNote }}</p>
+        </sc-if>
         <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
           <p style="margin:16px 0 0;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.6;color:#6B6455">{{ t.shows.sampleNote }}</p>
         </sc-if>
@@ -276,12 +281,17 @@
             <div style="background:#EFE2BE;padding:22px;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-start">
               <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:24px">{{ show.price }}</span>
               <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6455">{{ t.showsPage.vat }}</span>
-              <a href="#" onClick="{{ noop }}" style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 18px;border:2px solid #D42226" style-hover="background:#0C0B09;border-color:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.shows.buy }}</a>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6455">{{ t.shows.extNote }}</span>
+              <sc-if value="{{ show.hasTickets }}" hint-placeholder-val="{{ true }}">
+                <a href="{{ show.ticketHref }}" target="{{ show.ticketTarget }}" rel="noopener" onClick="{{ show.ticketClick }}" style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 18px;border:2px solid #D42226" style-hover="background:#0C0B09;border-color:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.shows.buy }}</a>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6455">{{ t.shows.extNote }}</span>
+              </sc-if>
             </div>
           </article>
         </sc-for>
       </div>
+      <sc-if value="{{ showsEmpty }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:0;padding:22px;border:3px solid #0C0B09;background:#EFE2BE;font-family:'Oswald',sans-serif;font-weight:600;font-size:18px;text-transform:uppercase;line-height:1.3">{{ t.shows.emptyNote }}</p>
+      </sc-if>
 
       <div style="margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
         <div style="border:3px solid #0C0B09;padding:24px;display:flex;flex-direction:column;gap:10px">
@@ -600,11 +610,10 @@ const EN = {
     venueLabel: "Venue", buy: "Buy Tickets",
     extNote: "Opens our ticket partner in a new tab",
     sampleNote: "SAMPLE DATA — replace with live dates from the CMS / ticket provider before launch.",
-    list: [
-      { weekday: "Friday", date: "21 Aug 2026", time: "Doors 19:30 · Show 20:00", title: "ComedyShorts: August Match", desc: "Two teams, ten games, one scoreboard. Suggestions from the room, decided by the room.", venue: "800A Bar", address: "Stettiner Str. 19, 13357 Berlin-Wedding", access: "Ground floor · step-free entrance", price: "€14 / €10 reduced", lang: "Played in English · no German required" },
-      { weekday: "Friday", date: "18 Sep 2026", time: "Doors 19:30 · Show 20:00", title: "ComedyShorts: September Match", desc: "Season restart, fresh line-up, new games in rotation. Come early — seating is limited.", venue: "800A Bar", address: "Stettiner Str. 19, 13357 Berlin-Wedding", access: "Ground floor · step-free entrance", price: "€14 / €10 reduced", lang: "Played in English · no German required" },
-      { weekday: "Friday", date: "16 Oct 2026", time: "Doors 19:30 · Show 20:00", title: "ComedyShorts: Champions Round", desc: "The teams with the best record this year play a longer match with a bigger scoreboard.", venue: "800A Bar", address: "Stettiner Str. 19, 13357 Berlin-Wedding", access: "Ground floor · step-free entrance", price: "€16 / €12 reduced", lang: "Played in English · no German required" }
-    ]
+    list: [],
+    doors: "Doors", show: "Show", reduced: "reduced",
+    langLine: "Played in English · no German required",
+    emptyNote: "New dates are coming soon — check back shortly or sign up for the newsletter.",
   },
   showsPage: {
     tag: "Match Card", title: "Upcoming shows",
@@ -801,11 +810,10 @@ const DE = {
     venueLabel: "Ort", buy: "Tickets kaufen",
     extNote: "Öffnet unseren Ticketpartner in einem neuen Tab",
     sampleNote: "BEISPIELDATEN — vor dem Launch durch echte Termine aus dem CMS bzw. vom Ticketanbieter ersetzen.",
-    list: [
-      { weekday: "Freitag", date: "21. Aug 2026", time: "Einlass 19:30 · Show 20:00", title: "ComedyShorts: Match im August", desc: "Zwei Teams, zehn Spiele, eine Anzeigetafel. Vorschläge aus dem Saal, entschieden vom Saal.", venue: "800A Bar", address: "Stettiner Str. 19, 13357 Berlin-Wedding", access: "Erdgeschoss · stufenloser Zugang", price: "14 € / 10 € ermäßigt", lang: "Auf Englisch gespielt · keine Deutschkenntnisse nötig" },
-      { weekday: "Freitag", date: "18. Sep 2026", time: "Einlass 19:30 · Show 20:00", title: "ComedyShorts: Match im September", desc: "Saisonstart, neues Line-up, neue Spiele in der Rotation. Kommt früh — die Plätze sind begrenzt.", venue: "800A Bar", address: "Stettiner Str. 19, 13357 Berlin-Wedding", access: "Erdgeschoss · stufenloser Zugang", price: "14 € / 10 € ermäßigt", lang: "Auf Englisch gespielt · keine Deutschkenntnisse nötig" },
-      { weekday: "Freitag", date: "16. Okt 2026", time: "Einlass 19:30 · Show 20:00", title: "ComedyShorts: Champions-Runde", desc: "Die Teams mit der besten Bilanz des Jahres spielen ein längeres Match mit größerer Anzeigetafel.", venue: "800A Bar", address: "Stettiner Str. 19, 13357 Berlin-Wedding", access: "Erdgeschoss · stufenloser Zugang", price: "16 € / 12 € ermäßigt", lang: "Auf Englisch gespielt · keine Deutschkenntnisse nötig" }
-    ]
+    list: [],
+    doors: "Einlass", show: "Show", reduced: "ermäßigt",
+    langLine: "Auf Englisch gespielt · keine Deutschkenntnisse nötig",
+    emptyNote: "Neue Termine folgen in Kürze — schaut bald wieder vorbei oder abonniert den Newsletter.",
   },
   showsPage: {
     tag: "Spielplan", title: "Nächste Shows",
@@ -969,11 +977,58 @@ const DE = {
   }
 };
 
+const CS_MONTHS = {
+  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  de: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+};
+const CS_WEEKDAYS = {
+  en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  de: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+};
+// Turns the entries in data/shows.json (edited through Pages CMS) into the
+// display fields the templates use. Past shows are dropped; the rest are sorted by date.
+function csFormatShows(raw, lg, t) {
+  if (!Array.isArray(raw)) return [];
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const de = lg === "de";
+  const has = (v) => v !== undefined && v !== null && String(v).trim() !== "";
+  const eur = (v) => de ? v + " €" : "€" + v;
+  return raw
+    .map((s) => {
+      const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String((s && s.date) || ""));
+      return m ? { s, d: new Date(+m[1], +m[2] - 1, +m[3]) } : null;
+    })
+    .filter((x) => x && x.d >= today)
+    .sort((a, b) => a.d - b.d)
+    .map(({ s, d }) => {
+      const pick = (k) => (de ? s[k + "_de"] : s[k + "_en"]) || s[k + "_en"] || s[k + "_de"] || "";
+      let price = has(s.price) ? eur(s.price) : "";
+      if (has(s.price_reduced)) price += (price ? " / " : "") + eur(s.price_reduced) + " " + t.shows.reduced;
+      const time = [has(s.doors) ? t.shows.doors + " " + s.doors : "", has(s.start) ? t.shows.show + " " + s.start : ""]
+        .filter(Boolean).join(" · ");
+      const url = /^https?:\/\//i.test(String(s.ticket_url || "").trim()) ? String(s.ticket_url).trim() : "";
+      return {
+        weekday: CS_WEEKDAYS[lg][d.getDay()],
+        date: d.getDate() + (de ? ". " : " ") + CS_MONTHS[lg][d.getMonth()] + " " + d.getFullYear(),
+        time, price,
+        title: pick("title"), desc: pick("desc"), access: pick("access"),
+        venue: s.venue || "", address: s.address || "",
+        lang: t.shows.langLine,
+        hasTickets: !!url,
+        ticketHref: url || "#",
+        ticketTarget: url ? "_blank" : "_self",
+        ticketClick: url ? undefined : (e) => { if (e) e.preventDefault(); }
+      };
+    });
+}
+
 class Component extends DCLogic {
   state = {
     lang: "en", page: "home", faqOpen: 0,
     newsSent: false, enquirySent: false, contactSent: false,
-    cookieChoice: null, cookieOpen: true, scoreA: 4, scoreB: 5
+    cookieChoice: null, cookieOpen: true, scoreA: 4, scoreB: 5,
+    shows: null
   };
 
   componentDidMount() {
@@ -995,6 +1050,10 @@ class Component extends DCLogic {
         return { scoreA: a, scoreB: b };
       });
     }, 4500);
+    fetch("data/shows.json", { cache: "no-cache" })
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((j) => this.setState({ shows: Array.isArray(j) ? j : (j && j.shows) || [] }))
+      .catch(() => this.setState({ shows: [] }));
   }
   componentWillUnmount() { clearInterval(this.timer); }
 
@@ -1019,7 +1078,10 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const t = this.state.lang === "de" ? DE : EN;
+    const lg = this.state.lang === "de" ? "de" : "en";
+    const base = lg === "de" ? DE : EN;
+    const showList = csFormatShows(this.state.shows, lg, base);
+    const t = { ...base, shows: { ...base.shows, list: showList } };
     const L = t.legal;
     const page = this.state.page;
     const legalMap = {
@@ -1062,6 +1124,7 @@ class Component extends DCLogic {
       })),
       showCookies: this.state.cookieOpen && (this.props.showCookieBanner ?? true),
       showNotes: this.props.showSampleDataNotes ?? true,
+      showsEmpty: this.state.shows !== null && showList.length === 0,
       acceptCookies: this.cookie("all"), rejectCookies: this.cookie("essential"),
       reopenCookies: (e) => { if (e) e.preventDefault(); this.setState({ cookieOpen: true }); }
     };

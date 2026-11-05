@@ -1,0 +1,81 @@
+# Pages CMS configuration — https://pagescms.org/docs/configuration/
+# Lets the team edit the show schedule (data/shows.json) through a form.
+content:
+  - name: shows
+    label: Shows
+    type: file
+    path: data/shows.json
+    format: json
+    fields:
+      - name: shows
+        label: Upcoming shows
+        description: Add one entry per show. Order doesn't matter — the website sorts by date and hides shows automatically once their day has passed.
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{date} — {title_en}"
+        fields:
+          - name: date
+            label: Date
+            type: date
+            required: true
+            options:
+              format: yyyy-MM-dd
+          - name: doors
+            label: Doors open
+            description: 24-hour time, e.g. 19:30
+            type: string
+            default: "19:30"
+          - name: start
+            label: Show starts
+            description: 24-hour time, e.g. 20:00
+            type: string
+            default: "20:00"
+          - name: title_en
+            label: Title (English)
+            type: string
+            required: true
+          - name: title_de
+            label: Title (German)
+            description: Leave empty to use the English title on the German site.
+            type: string
+          - name: desc_en
+            label: Description (English)
+            type: text
+          - name: desc_de
+            label: Description (German)
+            description: Leave empty to use the English description on the German site.
+            type: text
+          - name: venue
+            label: Venue
+            type: string
+            default: 800A Bar
+          - name: address
+            label: Address
+            type: string
+            default: Stettiner Str. 19, 13357 Berlin-Wedding
+          - name: access_en
+            label: Accessibility (English)
+            type: string
+            default: Ground floor · step-free entrance
+          - name: access_de
+            label: Accessibility (German)
+            type: string
+            default: Erdgeschoss · stufenloser Zugang
+          - name: price
+            label: Price (€)
+            description: Full ticket price in euros, e.g. 14
+            type: number
+            options:
+              min: 0
+          - name: price_reduced
+            label: Reduced price (€)
+            description: Optional. Leave empty if there is no reduced price.
+            type: number
+            options:
+              min: 0
+          - name: ticket_url
+            label: Ticket link
+            description: Full link to the ticket page, starting with https://. While this is empty, the show is listed without a Buy Tickets button.
+            type: string
