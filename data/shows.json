@@ -1,0 +1,52 @@
+{
+  "shows": [
+    {
+      "date": "2026-11-20",
+      "doors": "19:30",
+      "start": "20:00",
+      "title_en": "ComedyShorts: November Match",
+      "title_de": "ComedyShorts: Match im November",
+      "desc_en": "Two teams, ten games, one scoreboard. Suggestions from the room, decided by the room.",
+      "desc_de": "Zwei Teams, zehn Spiele, eine Anzeigetafel. Vorschläge aus dem Saal, entschieden vom Saal.",
+      "venue": "800A Bar",
+      "address": "Stettiner Str. 19, 13357 Berlin-Wedding",
+      "access_en": "Ground floor · step-free entrance",
+      "access_de": "Erdgeschoss · stufenloser Zugang",
+      "price": 14,
+      "price_reduced": 10,
+      "ticket_url": ""
+    },
+    {
+      "date": "2026-12-18",
+      "doors": "19:30",
+      "start": "20:00",
+      "title_en": "ComedyShorts: December Match",
+      "title_de": "ComedyShorts: Match im Dezember",
+      "desc_en": "Two teams, ten games, one scoreboard. Suggestions from the room, decided by the room.",
+      "desc_de": "Zwei Teams, zehn Spiele, eine Anzeigetafel. Vorschläge aus dem Saal, entschieden vom Saal.",
+      "venue": "800A Bar",
+      "address": "Stettiner Str. 19, 13357 Berlin-Wedding",
+      "access_en": "Ground floor · step-free entrance",
+      "access_de": "Erdgeschoss · stufenloser Zugang",
+      "price": 14,
+      "price_reduced": 10,
+      "ticket_url": ""
+    },
+    {
+      "date": "2027-01-15",
+      "doors": "19:30",
+      "start": "20:00",
+      "title_en": "ComedyShorts: January Match",
+      "title_de": "ComedyShorts: Match im Januar",
+      "desc_en": "Two teams, ten games, one scoreboard. Suggestions from the room, decided by the room.",
+      "desc_de": "Zwei Teams, zehn Spiele, eine Anzeigetafel. Vorschläge aus dem Saal, entschieden vom Saal.",
+      "venue": "800A Bar",
+      "address": "Stettiner Str. 19, 13357 Berlin-Wedding",
+      "access_en": "Ground floor · step-free entrance",
+      "access_de": "Erdgeschoss · stufenloser Zugang",
+      "price": 14,
+      "price_reduced": 10,
+      "ticket_url": ""
+    }
+  ]
+}
