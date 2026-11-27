@@ -19,9 +19,8 @@
   a { color: #D42226; text-decoration: none; }
   a:hover { color: #0C0B09; text-decoration: underline; }
   input, textarea, select, button { font-family: inherit; }
-  @keyframes cs-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes cs-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
-  @keyframes cs-meter { 0% { width: 18%; } 45% { width: 74%; } 60% { width: 66%; } 100% { width: 92%; } }
+  @keyframes cs-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 </style>
 </helmet>
 <div style="background:#EFE2BE;color:#0C0B09;min-height:100vh;overflow-x:hidden">
@@ -29,8 +28,13 @@
   <header style="position:sticky;top:0;z-index:40;background:#0C0B09;border-bottom:4px solid #D42226">
     <div style="max-width:1240px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:20px;justify-content:space-between">
       <a href="#" onClick="{{ nav.home }}" style="display:flex;flex-direction:column;gap:3px;text-decoration:none;flex:0 0 auto" aria-label="ComedyShorts Berlin — home">
-        <span style="background:#3AA0EC;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:17px;letter-spacing:0.06em;line-height:1;padding:5px 12px 5px 10px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">COMEDY</span>
-        <span style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:17px;letter-spacing:0.06em;line-height:1;padding:5px 12px 5px 10px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">SHORTS</span>
+        <sc-if value="{{ hasLogo }}" hint-placeholder-val="{{ false }}">
+          <img src="{{ logoSrc }}" alt="ComedyShorts Berlin" style="height:46px;width:auto;max-width:220px;display:block" />
+        </sc-if>
+        <sc-if value="{{ noLogo }}" hint-placeholder-val="{{ true }}">
+          <span style="background:#3AA0EC;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:17px;letter-spacing:0.06em;line-height:1;padding:5px 12px 5px 10px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">COMEDY</span>
+          <span style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:17px;letter-spacing:0.06em;line-height:1;padding:5px 12px 5px 10px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">SHORTS</span>
+        </sc-if>
       </a>
 
       <nav style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:flex-end">
@@ -38,6 +42,7 @@
         <a href="#" onClick="{{ nav.shows }}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#EFE2BE;padding:8px 10px;border-bottom:2px solid transparent" style-hover="color:#3AA0EC;border-bottom:2px solid #3AA0EC">{{ t.nav.shows }}</a>
         <a href="#" onClick="{{ nav.events }}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#EFE2BE;padding:8px 10px;border-bottom:2px solid transparent" style-hover="color:#3AA0EC;border-bottom:2px solid #3AA0EC">{{ t.nav.events }}</a>
         <a href="#" onClick="{{ nav.about }}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#EFE2BE;padding:8px 10px;border-bottom:2px solid transparent" style-hover="color:#3AA0EC;border-bottom:2px solid #3AA0EC">{{ t.nav.about }}</a>
+        <a href="#" onClick="{{ nav.players }}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#EFE2BE;padding:8px 10px;border-bottom:2px solid transparent" style-hover="color:#3AA0EC;border-bottom:2px solid #3AA0EC">{{ t.nav.players }}</a>
         <a href="#" onClick="{{ nav.contact }}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#EFE2BE;padding:8px 10px;border-bottom:2px solid transparent" style-hover="color:#3AA0EC;border-bottom:2px solid #3AA0EC">{{ t.nav.contact }}</a>
 
         <div style="display:flex;align-items:center;border:2px solid #EFE2BE;margin-left:8px">
@@ -50,13 +55,8 @@
     </div>
   </header>
 
-  <div style="background:#EFE2BE;border-bottom:3px solid #0C0B09;overflow:hidden;white-space:nowrap">
-    <div style="display:inline-flex;animation:cs-marquee 32s linear infinite;padding:9px 0">
-      <span style="font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;padding-right:28px">{{ t.ticker }}</span>
-      <span style="font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;padding-right:28px">{{ t.ticker }}</span>
-      <span style="font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;padding-right:28px">{{ t.ticker }}</span>
-      <span style="font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;padding-right:28px">{{ t.ticker }}</span>
-    </div>
+  <div style="background:#EFE2BE;border-bottom:3px solid #0C0B09;padding:9px 20px;text-align:center">
+    <span style="font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;line-height:1.5">{{ t.ticker }}</span>
   </div>
 
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
@@ -87,26 +87,24 @@
       </div>
     </section>
 
-    <section style="background:#D42226;color:#fff;padding:22px 20px">
-      <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:30px;line-height:1">2005</span>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase">{{ t.stats.a }}</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:30px;line-height:1">2</span>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase">{{ t.stats.b }}</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:30px;line-height:1">100%</span>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase">{{ t.stats.c }}</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:30px;line-height:1">1</span>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase">{{ t.stats.d }}</span>
-        </div>
+    <sc-if value="{{ hasQuotes }}" hint-placeholder-val="{{ true }}">
+    <section aria-label="{{ t.quotes.tag }}" style="background:#D42226;color:#fff;padding:30px 20px">
+      <div style="max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:14px">
+        <button type="button" onClick="{{ quotePrev }}" aria-label="{{ t.quotes.prev }}" style="flex:0 0 auto;width:44px;height:44px;background:transparent;border:2px solid #fff;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:22px;line-height:1;cursor:pointer" style-hover="background:#fff;color:#D42226">‹</button>
+        <figure style="flex:1;margin:0;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;min-height:132px;justify-content:center" aria-live="polite">
+          <span style="font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">★★★ {{ t.quotes.tag }} ★★★</span>
+          <sc-for list="{{ quoteOne }}" as="q" hint-placeholder-count="1">
+            <div style="display:flex;flex-direction:column;gap:10px;align-items:center;animation:cs-fade 0.5s ease-out">
+              <blockquote style="margin:0;font-family:'Oswald',sans-serif;font-weight:600;font-size:clamp(20px,2.6vw,30px);line-height:1.2;max-width:34ch">“{{ q.text }}”</blockquote>
+              <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:0.08em;text-transform:uppercase">— {{ q.name }}</figcaption>
+            </div>
+          </sc-for>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;opacity:0.75">{{ quotePos }}</span>
+        </figure>
+        <button type="button" onClick="{{ quoteNext }}" aria-label="{{ t.quotes.next }}" style="flex:0 0 auto;width:44px;height:44px;background:transparent;border:2px solid #fff;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:22px;line-height:1;cursor:pointer" style-hover="background:#fff;color:#D42226">›</button>
       </div>
     </section>
+    </sc-if>
 
     <section id="format" style="padding:72px 20px;background:#EFE2BE">
       <div style="max-width:1240px;margin:0 auto">
@@ -117,37 +115,30 @@
         <h2 style="margin:0 0 14px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(30px,4.4vw,52px);line-height:0.95">{{ t.format.title }}</h2>
         <p style="margin:0 0 40px;max-width:62ch;font-size:17px;line-height:1.6">{{ t.format.body }}</p>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2px;background:#0C0B09;border:3px solid #0C0B09">
-          <sc-for list="{{ t.format.steps }}" as="step" hint-placeholder-count="7">
-            <div style="background:#EFE2BE;padding:22px 20px;display:flex;flex-direction:column;gap:8px;min-height:180px" style-hover="background:#E4D3A8">
-              <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:34px;line-height:1;color:#D42226">{{ step.n }}</span>
-              <h3 style="margin:0;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;font-size:17px;letter-spacing:0.03em">{{ step.title }}</h3>
-              <p style="margin:0;font-size:14.5px;line-height:1.5;color:#3A342A">{{ step.text }}</p>
-            </div>
-          </sc-for>
-        </div>
-
-        <div style="margin-top:2px;background:#0C0B09;color:#EFE2BE;border:3px solid #0C0B09;padding:26px 22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;align-items:center">
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#3AA0EC">{{ t.format.scoreTag }}</span>
-            <div style="display:flex;align-items:flex-end;gap:16px;font-family:'Oswald',sans-serif;font-weight:700;line-height:0.9">
-              <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
-                <span style="font-size:13px;letter-spacing:0.12em;color:#3AA0EC">{{ t.format.teamA }}</span>
-                <span style="font-size:58px;background:#3AA0EC;color:#0C0B09;padding:2px 16px 6px">{{ scoreA }}</span>
-              </div>
-              <span style="font-family:'Zilla Slab',Georgia,serif;font-size:20px;padding-bottom:14px">:</span>
-              <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
-                <span style="font-size:13px;letter-spacing:0.12em;color:#D42226">{{ t.format.teamB }}</span>
-                <span style="font-size:58px;background:#D42226;color:#fff;padding:2px 16px 6px">{{ scoreB }}</span>
-              </div>
-            </div>
+        <div style="background:#0C0B09;color:#EFE2BE;border:3px solid #0C0B09;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0">
+          <div style="padding:26px 24px;display:flex;flex-direction:column;gap:10px;justify-content:center">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#3AA0EC">{{ t.video.tag }}</span>
+            <h3 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(22px,2.6vw,30px);line-height:1">{{ videoTitle }}</h3>
+            <p style="margin:0;font-size:15px;line-height:1.55;color:#DED2B2;max-width:44ch">{{ t.video.body }}</p>
           </div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#DED2B2">{{ t.format.meter }}</span>
-            <div style="height:26px;background:#221F1A;border:2px solid #EFE2BE">
-              <div style="height:100%;background:#3AA0EC;animation:cs-meter 4.5s ease-in-out infinite alternate"></div>
-            </div>
-            <p style="margin:0;font-size:14px;line-height:1.5;color:#DED2B2">{{ t.format.meterNote }}</p>
+          <div style="aspect-ratio:16/9;background:#221F1A;min-width:0">
+            <sc-if value="{{ videoFile }}" hint-placeholder-val="{{ false }}">
+              <video controls="" preload="metadata" playsinline="" src="{{ videoSrc }}" poster="{{ videoPoster }}" style="width:100%;height:100%;display:block;background:#000"></video>
+            </sc-if>
+            <sc-if value="{{ videoEmbed }}" hint-placeholder-val="{{ false }}">
+              <iframe src="{{ videoEmbedSrc }}" title="{{ videoTitle }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="" style="border:0;width:100%;height:100%;display:block"></iframe>
+            </sc-if>
+            <sc-if value="{{ videoGate }}" hint-placeholder-val="{{ false }}">
+              <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center">
+                <button type="button" onClick="{{ loadVideo }}" style="background:#D42226;color:#fff;border:3px solid #D42226;font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;padding:14px 24px;cursor:pointer" style-hover="background:#EFE2BE;border-color:#EFE2BE;color:#0C0B09">▶ {{ t.video.load }}</button>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;line-height:1.5;color:#8A8375;max-width:40ch">{{ videoConsent }}</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ videoNone }}" hint-placeholder-val="{{ true }}">
+              <div style="width:100%;height:100%;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);display:flex;align-items:flex-end;padding:12px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;background:#0C0B09;color:#EFE2BE;padding:5px 8px">{{ t.video.slot }}</span>
+              </div>
+            </sc-if>
           </div>
         </div>
       </div>
@@ -174,11 +165,20 @@
               </div>
               <div style="background:#EFE2BE;padding:20px;display:flex;flex-direction:column;gap:6px;justify-content:center">
                 <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#3A342A">{{ t.shows.venueLabel }}</span>
-                <span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;text-transform:uppercase">{{ show.venue }}</span>
+                <sc-if value="{{ show.hasVenueLink }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ show.venueHref }}" target="_blank" rel="noopener" style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;text-transform:uppercase;color:#0C0B09;text-decoration:underline;text-decoration-color:#D42226;text-decoration-thickness:2px;text-underline-offset:3px" style-hover="color:#D42226">{{ show.venue }} ↗</a>
+                </sc-if>
+                <sc-if value="{{ show.noVenueLink }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;text-transform:uppercase">{{ show.venue }}</span>
+                </sc-if>
                 <span style="font-size:13.5px;color:#3A342A">{{ show.address }}</span>
+                <sc-if value="{{ show.hasMap }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ show.mapHref }}" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:#D42226" style-hover="color:#0C0B09">⌖ {{ t.shows.mapLink }} ↗</a>
+                </sc-if>
               </div>
               <div style="background:#EFE2BE;padding:20px;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-start">
-                <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:22px">{{ show.price }}</span>
+                <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:22px;line-height:1">{{ show.price }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3A342A">{{ show.priceDoor }}</span>
                 <sc-if value="{{ show.hasTickets }}" hint-placeholder-val="{{ true }}">
                   <a href="{{ show.ticketHref }}" target="{{ show.ticketTarget }}" rel="noopener" onClick="{{ show.ticketClick }}" style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 18px;border:2px solid #D42226" style-hover="background:#0C0B09;border-color:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.shows.buy }}</a>
                   <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;color:#6B6455">{{ t.shows.extNote }}</span>
@@ -203,6 +203,31 @@
           <span style="height:3px;flex:1;background:#0C0B09;min-width:40px"></span>
         </div>
         <h2 style="margin:0 0 28px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(30px,4.4vw,52px);line-height:0.95">{{ t.gallery.title }}</h2>
+        <sc-if value="{{ hasAlbums }}" hint-placeholder-val="{{ false }}">
+          <div style="border-top:3px solid #0C0B09">
+            <sc-for list="{{ albums }}" as="al" hint-placeholder-count="3">
+              <div style="border-bottom:2px solid #0C0B09">
+                <button type="button" onClick="{{ al.toggle }}" aria-expanded="{{ al.expanded }}" style="width:100%;background:transparent;border:0;padding:16px 0;display:flex;gap:14px;align-items:center;justify-content:space-between;cursor:pointer;text-align:left;color:#0C0B09" style-hover="color:#D42226">
+                  <span style="display:flex;flex-direction:column;gap:3px">
+                    <span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:18px;text-transform:uppercase">{{ al.title }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#6B6455">{{ al.meta }}</span>
+                  </span>
+                  <span style="color:#D42226;font-size:24px;line-height:1;font-family:'Oswald',sans-serif">{{ al.sign }}</span>
+                </button>
+                <sc-if value="{{ al.open }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;padding:0 0 20px">
+                    <sc-for list="{{ al.photos }}" as="ph" hint-placeholder-count="6">
+                      <button type="button" onClick="{{ ph.open }}" aria-label="{{ ph.alt }}" style="padding:0;border:3px solid #0C0B09;background:#E4D3A8;aspect-ratio:4/3;cursor:zoom-in;overflow:hidden;display:block" style-hover="border-color:#D42226">
+                        <img src="{{ ph.src }}" alt="{{ ph.alt }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" />
+                      </button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noAlbums }}" hint-placeholder-val="{{ true }}">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
           <sc-for list="{{ t.gallery.slots }}" as="slot" hint-placeholder-count="6">
             <div style="aspect-ratio:4/3;border:3px solid #0C0B09;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);display:flex;align-items:flex-end;padding:12px">
@@ -210,6 +235,7 @@
             </div>
           </sc-for>
         </div>
+        </sc-if>
       </div>
     </section>
 
@@ -257,7 +283,13 @@
     <div style="max-width:1240px;margin:0 auto">
       <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#D42226">{{ t.showsPage.tag }}</span>
       <h1 style="margin:8px 0 14px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(34px,5.4vw,64px);line-height:0.94">{{ t.showsPage.title }}</h1>
-      <p style="margin:0 0 36px;max-width:62ch;font-size:17px;line-height:1.6">{{ t.showsPage.body }}</p>
+      <p style="margin:0 0 24px;max-width:62ch;font-size:17px;line-height:1.6">{{ t.showsPage.body }}</p>
+      <sc-if value="{{ hasPortal }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:0 0 32px">
+          <a href="{{ portalHref }}" target="_blank" rel="noopener" style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;padding:15px 24px;border:3px solid #D42226" style-hover="background:#0C0B09;border-color:#0C0B09;color:#EFE2BE;text-decoration:none">{{ portalCta }} ↗</a>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.5;color:#3A342A;max-width:44ch">{{ t.showsPage.portalNote }}</span>
+        </div>
+      </sc-if>
 
       <div style="display:flex;flex-direction:column;gap:14px">
         <sc-for list="{{ t.shows.list }}" as="show" hint-placeholder-count="3">
@@ -274,12 +306,21 @@
             </div>
             <div style="background:#EFE2BE;padding:22px;display:flex;flex-direction:column;gap:6px;justify-content:center">
               <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#3A342A">{{ t.shows.venueLabel }}</span>
-              <span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;text-transform:uppercase">{{ show.venue }}</span>
+              <sc-if value="{{ show.hasVenueLink }}" hint-placeholder-val="{{ true }}">
+                <a href="{{ show.venueHref }}" target="_blank" rel="noopener" style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;text-transform:uppercase;color:#0C0B09;text-decoration:underline;text-decoration-color:#D42226;text-decoration-thickness:2px;text-underline-offset:3px" style-hover="color:#D42226">{{ show.venue }} ↗</a>
+              </sc-if>
+              <sc-if value="{{ show.noVenueLink }}" hint-placeholder-val="{{ false }}">
+                <span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;text-transform:uppercase">{{ show.venue }}</span>
+              </sc-if>
               <span style="font-size:13.5px;color:#3A342A">{{ show.address }}</span>
               <span style="font-size:13.5px;color:#3A342A">{{ show.access }}</span>
+              <sc-if value="{{ show.hasMap }}" hint-placeholder-val="{{ true }}">
+                <a href="{{ show.mapHref }}" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:#D42226" style-hover="color:#0C0B09">⌖ {{ t.shows.mapLink }} ↗</a>
+              </sc-if>
             </div>
             <div style="background:#EFE2BE;padding:22px;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-start">
-              <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:24px">{{ show.price }}</span>
+              <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:24px;line-height:1">{{ show.price }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3A342A">{{ show.priceDoor }}</span>
               <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#6B6455">{{ t.showsPage.vat }}</span>
               <sc-if value="{{ show.hasTickets }}" hint-placeholder-val="{{ true }}">
                 <a href="{{ show.ticketHref }}" target="{{ show.ticketTarget }}" rel="noopener" onClick="{{ show.ticketClick }}" style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 18px;border:2px solid #D42226" style-hover="background:#0C0B09;border-color:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.shows.buy }}</a>
@@ -297,8 +338,22 @@
         <div style="border:3px solid #0C0B09;padding:24px;display:flex;flex-direction:column;gap:10px">
           <h2 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:22px">{{ t.showsPage.venueTitle }}</h2>
           <p style="margin:0;font-size:15px;line-height:1.6">{{ t.showsPage.venueBody }}</p>
-          <div style="aspect-ratio:16/10;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);border:3px solid #0C0B09;display:flex;align-items:flex-end;padding:12px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:#0C0B09;color:#EFE2BE;padding:5px 8px">{{ t.showsPage.mapSlot }}</span>
+          <div style="aspect-ratio:16/10;border:3px solid #0C0B09;background:#E4D3A8;overflow:hidden">
+            <sc-if value="{{ mapShow }}" hint-placeholder-val="{{ false }}">
+              <iframe src="{{ mapEmbed }}" title="{{ t.showsPage.mapTitle }}" loading="lazy" style="border:0;width:100%;height:100%;display:block"></iframe>
+            </sc-if>
+            <sc-if value="{{ mapGate }}" hint-placeholder-val="{{ true }}">
+              <div style="width:100%;height:100%;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;padding:18px;text-align:center">
+                <button type="button" onClick="{{ loadMap }}" style="background:#0C0B09;color:#EFE2BE;border:3px solid #0C0B09;font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;padding:12px 20px;cursor:pointer" style-hover="background:#D42226;border-color:#D42226;color:#fff">⌖ {{ t.showsPage.mapLoad }}</button>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;line-height:1.5;color:#3A342A;max-width:40ch;background:#EFE2BE;padding:4px 8px">{{ t.showsPage.mapConsent }}</span>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a href="{{ gmapsHref }}" target="_blank" rel="noopener" style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;border:2px solid #0C0B09;color:#0C0B09;padding:9px 14px" style-hover="background:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.showsPage.gmaps }} ↗</a>
+            <sc-if value="{{ hasVenueSite }}" hint-placeholder-val="{{ true }}">
+              <a href="{{ venueSite }}" target="_blank" rel="noopener" style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;border:2px solid #0C0B09;color:#0C0B09;padding:9px 14px" style-hover="background:#0C0B09;color:#EFE2BE;text-decoration:none">{{ t.showsPage.venueSite }} ↗</a>
+            </sc-if>
           </div>
         </div>
         <div style="border:3px solid #0C0B09;padding:24px;display:flex;flex-direction:column;gap:12px;background:#0C0B09;color:#EFE2BE">
@@ -417,16 +472,69 @@
       <div style="margin-top:52px">
         <h2 style="margin:0 0 20px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:30px">{{ t.aboutPage.castTitle }}</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
-          <sc-for list="{{ t.aboutPage.cast }}" as="c" hint-placeholder-count="4">
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <div style="aspect-ratio:3/4;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);border:3px solid #0C0B09;display:flex;align-items:flex-end;padding:10px">
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:#0C0B09;color:#EFE2BE;padding:4px 7px">{{ c.slot }}</span>
-              </div>
+          <sc-for list="{{ playersPreview }}" as="c" hint-placeholder-count="4">
+            <button type="button" onClick="{{ nav.players }}" style="display:flex;flex-direction:column;gap:8px;background:transparent;border:0;padding:0;text-align:left;cursor:pointer;color:#0C0B09" style-hover="color:#D42226">
+              <sc-if value="{{ c.hasPhoto }}" hint-placeholder-val="{{ false }}">
+                <img src="{{ c.src }}" alt="{{ c.name }}" loading="lazy" style="width:100%;aspect-ratio:3/4;object-fit:cover;border:3px solid #0C0B09;display:block" />
+              </sc-if>
+              <sc-if value="{{ c.noPhoto }}" hint-placeholder-val="{{ true }}">
+                <div style="width:100%;aspect-ratio:3/4;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);border:3px solid #0C0B09;display:flex;align-items:flex-end;padding:10px">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:#0C0B09;color:#EFE2BE;padding:4px 7px">{{ t.playersPage.photoSlot }}</span>
+                </div>
+              </sc-if>
               <span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;text-transform:uppercase">{{ c.name }}</span>
               <span style="font-size:13.5px;color:#3A342A;line-height:1.45">{{ c.role }}</span>
-            </div>
+            </button>
           </sc-for>
         </div>
+        <a href="#" onClick="{{ nav.players }}" style="display:inline-block;margin-top:22px;background:#0C0B09;color:#EFE2BE;font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;padding:14px 24px;border:3px solid #0C0B09" style-hover="background:#D42226;border-color:#D42226;color:#fff;text-decoration:none">{{ t.aboutPage.castCta }} →</a>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isPlayers }}" hint-placeholder-val="{{ false }}">
+  <main style="padding:56px 20px 72px;background:#EFE2BE">
+    <div style="max-width:1240px;margin:0 auto">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#D42226">{{ t.playersPage.tag }}</span>
+      <h1 style="margin:8px 0 14px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(34px,5.4vw,64px);line-height:0.94">{{ t.playersPage.title }}</h1>
+      <p style="margin:0 0 36px;max-width:62ch;font-size:17px;line-height:1.6">{{ t.playersPage.body }}</p>
+
+      <sc-for list="{{ playersFeatured }}" as="p" hint-placeholder-count="1">
+        <article style="border:3px solid #0C0B09;background:#0C0B09;color:#EFE2BE;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;margin-bottom:28px">
+          <sc-if value="{{ p.hasPhoto }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ p.src }}" alt="{{ p.name }}" style="width:100%;height:100%;min-height:320px;object-fit:cover;display:block" />
+          </sc-if>
+          <sc-if value="{{ p.noPhoto }}" hint-placeholder-val="{{ true }}">
+            <div style="min-height:340px;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);display:flex;align-items:flex-end;padding:12px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:#0C0B09;color:#EFE2BE;padding:5px 8px">{{ t.playersPage.photoSlot }}</span>
+            </div>
+          </sc-if>
+          <div style="padding:32px 28px;display:flex;flex-direction:column;gap:12px;justify-content:center">
+            <span style="font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:#D42226">★ {{ t.playersPage.featured }}</span>
+            <h2 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(30px,4vw,48px);line-height:0.95">{{ p.name }}</h2>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#3AA0EC">{{ p.role }}</span>
+            <p style="margin:0;font-size:16px;line-height:1.65;color:#DED2B2;white-space:pre-line">{{ p.bio }}</p>
+          </div>
+        </article>
+      </sc-for>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px">
+        <sc-for list="{{ playersRest }}" as="p" hint-placeholder-count="6">
+          <article style="display:flex;flex-direction:column;gap:10px">
+            <sc-if value="{{ p.hasPhoto }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ p.src }}" alt="{{ p.name }}" loading="lazy" style="width:100%;aspect-ratio:3/4;object-fit:cover;border:3px solid #0C0B09;display:block" />
+            </sc-if>
+            <sc-if value="{{ p.noPhoto }}" hint-placeholder-val="{{ true }}">
+              <div style="width:100%;aspect-ratio:3/4;background-color:#E4D3A8;background-image:repeating-linear-gradient(135deg,rgba(12,11,9,0.09) 0 10px,transparent 10px 20px);border:3px solid #0C0B09;display:flex;align-items:flex-end;padding:10px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:#0C0B09;color:#EFE2BE;padding:4px 7px">{{ t.playersPage.photoSlot }}</span>
+              </div>
+            </sc-if>
+            <h2 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:20px;line-height:1">{{ p.name }}</h2>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#D42226">{{ p.role }}</span>
+            <p style="margin:0;font-size:14.5px;line-height:1.6;color:#3A342A;white-space:pre-line">{{ p.bio }}</p>
+          </article>
+        </sc-for>
       </div>
     </div>
   </main>
@@ -527,8 +635,13 @@
     <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px">
       <div style="display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-start">
-          <span style="background:#3AA0EC;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;line-height:1;padding:6px 14px 6px 12px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">COMEDY</span>
-          <span style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;line-height:1;padding:6px 14px 6px 12px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">SHORTS</span>
+          <sc-if value="{{ hasLogo }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ logoSrc }}" alt="ComedyShorts Berlin" style="height:60px;width:auto;max-width:260px;display:block" />
+          </sc-if>
+          <sc-if value="{{ noLogo }}" hint-placeholder-val="{{ true }}">
+            <span style="background:#3AA0EC;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;line-height:1;padding:6px 14px 6px 12px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">COMEDY</span>
+            <span style="background:#D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;line-height:1;padding:6px 14px 6px 12px;clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%,8% 50%)">SHORTS</span>
+          </sc-if>
         </div>
         <p style="margin:0;font-size:14px;line-height:1.6;color:#DED2B2;max-width:32ch">{{ t.footer.blurb }}</p>
       </div>
@@ -537,6 +650,7 @@
         <a href="#" onClick="{{ nav.shows }}" style="color:#EFE2BE;font-size:15px" style-hover="color:#3AA0EC">{{ t.nav.shows }}</a>
         <a href="#" onClick="{{ nav.events }}" style="color:#EFE2BE;font-size:15px" style-hover="color:#3AA0EC">{{ t.nav.events }}</a>
         <a href="#" onClick="{{ nav.about }}" style="color:#EFE2BE;font-size:15px" style-hover="color:#3AA0EC">{{ t.nav.about }}</a>
+        <a href="#" onClick="{{ nav.players }}" style="color:#EFE2BE;font-size:15px" style-hover="color:#3AA0EC">{{ t.nav.players }}</a>
         <a href="#" onClick="{{ nav.contact }}" style="color:#EFE2BE;font-size:15px" style-hover="color:#3AA0EC">{{ t.nav.contact }}</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:9px">
@@ -559,6 +673,18 @@
     </div>
   </footer>
 
+  <sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="{{ lbCaption }}" onClick="{{ lbClose }}" style="position:fixed;inset:0;z-index:70;background:rgba(12,11,9,0.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:14px">
+      <img src="{{ lbSrc }}" alt="{{ lbAlt }}" onClick="{{ stop }}" style="max-width:100%;max-height:80vh;border:4px solid #EFE2BE;display:block" />
+      <div onClick="{{ stop }}" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center">
+        <button type="button" onClick="{{ lbPrev }}" aria-label="{{ t.gallery.prev }}" style="width:44px;height:44px;background:transparent;border:2px solid #EFE2BE;color:#EFE2BE;font-size:22px;cursor:pointer" style-hover="background:#EFE2BE;color:#0C0B09">‹</button>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#EFE2BE;padding:0 8px;text-align:center">{{ lbCaption }}</span>
+        <button type="button" onClick="{{ lbNext }}" aria-label="{{ t.gallery.next }}" style="width:44px;height:44px;background:transparent;border:2px solid #EFE2BE;color:#EFE2BE;font-size:22px;cursor:pointer" style-hover="background:#EFE2BE;color:#0C0B09">›</button>
+        <button type="button" onClick="{{ lbClose }}" aria-label="{{ t.gallery.close }}" style="height:44px;background:#D42226;border:2px solid #D42226;color:#fff;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;padding:0 16px;cursor:pointer">✕ {{ t.gallery.close }}</button>
+      </div>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ showCookies }}" hint-placeholder-val="{{ false }}">
     <div role="dialog" aria-label="Cookie settings" style="position:fixed;left:0;right:0;bottom:0;z-index:60;background:#0C0B09;color:#EFE2BE;border-top:4px solid #3AA0EC;padding:20px">
       <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:center">
@@ -578,7 +704,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;de&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showCookieBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Compliance&quot;},&quot;showSampleDataNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Compliance&quot;}}">
 const EN = {
-  nav: { home: "Home", shows: "Shows", events: "Private Events", about: "About", contact: "Contact", tickets: "Get Tickets" },
+  nav: { home: "Home", shows: "Shows", events: "Private Events", about: "About", players: "Players", contact: "Contact", tickets: "Get Tickets" },
   ticker: "Every 3rd Friday • Doors 19:30 • Show 20:00 • 800A Bar, Berlin-Wedding • Played in English • Est. 2005 •",
   hero: {
     kicker: "Berlin's longest-running English-language improv show — since 2005",
@@ -586,24 +712,18 @@ const EN = {
     body: "ComedyShorts Berlin has been entertaining audiences since 2005. Every performance is completely unscripted, built from audience suggestions, and played as a fast-paced competition between two improv teams. A referee keeps the action moving, the audience awards the points, and one team is crowned the winner.",
     cta1: "Get Tickets", cta2: "How It Works", cta3: "Book a Private Event"
   },
-  stats: { a: "Playing since", b: "Teams per match", c: "Unscripted", d: "Referee in charge" },
+  quotes: { tag: "What the audience says", prev: "Previous review", next: "Next review" },
   format: {
     tag: "The Format",
     title: "Short-form improv, played like a sport",
-    body: "This is not stand-up and it is not long-form improv. It is a match: quick games, a running clock, a scoreboard, and a room full of people who get a say in every round.",
-    steps: [
-      { n: "01", title: "You suggest", text: "Before and during the show, the audience throws out words, relationships and situations. Nothing is prepared in advance." },
-      { n: "02", title: "The referee calls the game", text: "The ref explains the rules of each short-form game, keeps time and hands out the occasional penalty." },
-      { n: "03", title: "Two teams compete", text: "Both teams play the same game with the same suggestion. Same brief, very different results." },
-      { n: "04", title: "The clock runs", text: "Games are short and timed. When the whistle goes, the scene ends — finished or not." },
-      { n: "05", title: "You vote", text: "After every round the room decides. Applause, hands, noise: the referee reads it and calls it." },
-      { n: "06", title: "Points go up", text: "The scoreboard tracks the match all evening, so the lead can swing right up to the final game." },
-      { n: "07", title: "One team wins", text: "At the end, the winners take the round of applause. Next month, everything resets." }
-    ],
-    scoreTag: "Live scoreboard",
-    teamA: "Team Blue", teamB: "Team Red",
-    meter: "Audience vote — round 6",
-    meterNote: "There are no judges. The loudest, happiest room decides who takes the point."
+    body: "This is not stand-up and it is not long-form improv. It is a match: quick games, a running clock, a scoreboard, and a room full of people who get a say in every round."
+  },
+  video: {
+    tag: "From the last show", title: "See it before you come",
+    body: "A few minutes from a recent match: two teams, one referee, and a room full of suggestions.",
+    slot: "video — clip from the last show",
+    load: "Play video",
+    consent: "Loads the video from {host}, which sends your IP address to {host}. See the Privacy Policy."
   },
   shows: {
     tag: "Match Card", title: "Upcoming shows",
@@ -611,7 +731,7 @@ const EN = {
     extNote: "Opens our ticket partner in a new tab",
     sampleNote: "SAMPLE DATA — replace with live dates from the CMS / ticket provider before launch.",
     list: [],
-    doors: "Doors", show: "Show", reduced: "reduced",
+    doors: "Doors", show: "Show", reduced: "reduced", online: "online", door: "at the door", mapLink: "Map",
     langLine: "Played in English · no German required",
     emptyNote: "New dates are coming soon — check back shortly or sign up for the newsletter.",
   },
@@ -621,7 +741,12 @@ const EN = {
     vat: "Price incl. German VAT where applicable",
     venueTitle: "Getting there",
     venueBody: "800A Bar, Stettiner Str. 19, 13357 Berlin-Wedding. A few minutes from S-Bahn Wollankstraße and Bornholmer Straße; buses stop around the corner.",
-    mapSlot: "map embed — load only after consent",
+    mapTitle: "Map: 800A Bar, Stettiner Str. 19, Berlin",
+    mapLoad: "Show map",
+    mapConsent: "Loads a map from OpenStreetMap, which sends your IP address to the OpenStreetMap Foundation.",
+    gmaps: "Open in Google Maps", venueSite: "800A website",
+    portalCta: "All dates & tickets on {portal}",
+    portalNote: "Online tickets are cheaper than paying at the door.",
     rulesTitle: "Good to know",
     rules: [
       { text: "The whole show is played in English. No German needed." },
@@ -634,7 +759,7 @@ const EN = {
   gallery: { tag: "From the floor", title: "Photos & highlights", slots: [
     { label: "photo — teams mid-game, wide" }, { label: "photo — referee with whistle" }, { label: "photo — audience voting, hands up" },
     { label: "photo — scoreboard close-up" }, { label: "video — 30s highlight reel" }, { label: "photo — team celebration" }
-  ] },
+  ], photo: "photo", photos: "photos", prev: "Previous photo", next: "Next photo", close: "Close" },
   privTeaser: {
     tag: "Private & Corporate", title: "Bring the match to your event",
     body: "We play company parties, conferences, team days, festivals and birthdays — indoors, outdoors, on real stages and in meeting rooms. Fully in English, in German, or a mix.",
@@ -684,13 +809,12 @@ const EN = {
       { kicker: "The teams", title: "Play the games", text: "Two teams of improvisers from Berlin's English-speaking scene, drawn from a rotating ensemble." },
       { kicker: "The audience", title: "Writes and judges it", text: "Your suggestions start every scene and your reaction ends every round. You are on the scorecard, not just in the seats." }
     ],
-    castTitle: "The ensemble",
-    cast: [
-      { slot: "portrait — performer", name: "Performer name", role: "Team Blue · with ComedyShorts since 20XX" },
-      { slot: "portrait — performer", name: "Performer name", role: "Team Red · with ComedyShorts since 20XX" },
-      { slot: "portrait — referee", name: "Referee name", role: "Referee · whistle, clock, final word" },
-      { slot: "portrait — performer", name: "Performer name", role: "Rotating ensemble · improv & music" }
-    ]
+    castTitle: "The ensemble", castCta: "Meet all the players"
+  },
+  playersPage: {
+    tag: "The players", title: "Meet the players",
+    body: "The improvisers, referees and musicians behind every match. Line-ups rotate, so every show is a different mix.",
+    featured: "Featured player", photoSlot: "portrait — photo to come"
   },
   contact: {
     tag: "Contact", title: "Say hello",
@@ -778,7 +902,7 @@ const EN = {
 };
 
 const DE = {
-  nav: { home: "Start", shows: "Shows", events: "Firmenevents", about: "Über uns", contact: "Kontakt", tickets: "Tickets" },
+  nav: { home: "Start", shows: "Shows", events: "Firmenevents", about: "Über uns", players: "Ensemble", contact: "Kontakt", tickets: "Tickets" },
   ticker: "Jeden 3. Freitag • Einlass 19:30 • Show 20:00 • 800A Bar, Berlin-Wedding • auf Englisch gespielt • seit 2005 •",
   hero: {
     kicker: "Berlins dienstälteste englischsprachige Improshow — seit 2005",
@@ -786,24 +910,18 @@ const DE = {
     body: "ComedyShorts Berlin spielt seit 2005 und ist die am längsten laufende englischsprachige Improvisationsshow der Stadt. Jede Vorstellung ist komplett unskriptiert, entsteht aus Vorschlägen des Publikums und wird als schneller Wettkampf zwischen zwei Improteams gespielt. Ein Schiedsrichter hält das Tempo, das Publikum verteilt die Punkte, ein Team gewinnt.",
     cta1: "Tickets kaufen", cta2: "So läuft es ab", cta3: "Event buchen"
   },
-  stats: { a: "Auf der Bühne seit", b: "Teams pro Match", c: "Unskriptiert", d: "Schiedsrichter" },
+  quotes: { tag: "Das sagt das Publikum", prev: "Vorherige Stimme", next: "Nächste Stimme" },
   format: {
     tag: "Das Format",
     title: "Kurzform-Impro, gespielt wie ein Sport",
-    body: "Kein Stand-up und kein Langform-Impro, sondern ein Match: kurze Spiele, laufende Uhr, Anzeigetafel — und ein Saal, der in jeder Runde mitentscheidet.",
-    steps: [
-      { n: "01", title: "Ihr macht Vorschläge", text: "Vor und während der Show ruft das Publikum Wörter, Beziehungen und Situationen zu. Nichts ist vorbereitet." },
-      { n: "02", title: "Der Schiedsrichter ruft das Spiel auf", text: "Er erklärt die Regeln jedes Spiels, nimmt die Zeit und verteilt auch mal eine Strafe." },
-      { n: "03", title: "Zwei Teams treten an", text: "Beide Teams spielen dasselbe Spiel mit demselben Vorschlag. Gleiche Aufgabe, sehr unterschiedliche Ergebnisse." },
-      { n: "04", title: "Die Uhr läuft", text: "Die Spiele sind kurz und getaktet. Pfeift der Schiedsrichter, ist die Szene vorbei — fertig oder nicht." },
-      { n: "05", title: "Ihr stimmt ab", text: "Nach jeder Runde entscheidet der Saal. Applaus, Hände, Lautstärke: der Schiedsrichter liest ab und wertet." },
-      { n: "06", title: "Punkte auf die Tafel", text: "Die Anzeigetafel zeigt den Stand des Abends — die Führung kann bis zum letzten Spiel kippen." },
-      { n: "07", title: "Ein Team gewinnt", text: "Am Ende gibt es Applaus für die Sieger. Im nächsten Monat wird alles zurückgesetzt." }
-    ],
-    scoreTag: "Live-Anzeigetafel",
-    teamA: "Team Blau", teamB: "Team Rot",
-    meter: "Publikumsvotum — Runde 6",
-    meterNote: "Es gibt keine Jury. Der lauteste, glücklichste Saal entscheidet, wer den Punkt bekommt."
+    body: "Kein Stand-up und kein Langform-Impro, sondern ein Match: kurze Spiele, laufende Uhr, Anzeigetafel — und ein Saal, der in jeder Runde mitentscheidet."
+  },
+  video: {
+    tag: "Von der letzten Show", title: "Schaut rein, bevor ihr kommt",
+    body: "Ein paar Minuten aus einem aktuellen Match: zwei Teams, ein Schiedsrichter und ein Saal voller Vorschläge.",
+    slot: "Video — Clip von der letzten Show",
+    load: "Video abspielen",
+    consent: "Lädt das Video von {host}; dabei wird Ihre IP-Adresse an {host} übertragen. Details in der Datenschutzerklärung."
   },
   shows: {
     tag: "Spielplan", title: "Nächste Shows",
@@ -811,7 +929,7 @@ const DE = {
     extNote: "Öffnet unseren Ticketpartner in einem neuen Tab",
     sampleNote: "BEISPIELDATEN — vor dem Launch durch echte Termine aus dem CMS bzw. vom Ticketanbieter ersetzen.",
     list: [],
-    doors: "Einlass", show: "Show", reduced: "ermäßigt",
+    doors: "Einlass", show: "Show", reduced: "ermäßigt", online: "Vorverkauf", door: "Abendkasse", mapLink: "Karte",
     langLine: "Auf Englisch gespielt · keine Deutschkenntnisse nötig",
     emptyNote: "Neue Termine folgen in Kürze — schaut bald wieder vorbei oder abonniert den Newsletter.",
   },
@@ -821,7 +939,12 @@ const DE = {
     vat: "Preis inkl. gesetzlicher USt., soweit anwendbar",
     venueTitle: "Anfahrt",
     venueBody: "800A Bar, Stettiner Str. 19, 13357 Berlin-Wedding. Wenige Minuten von S Wollankstraße und S Bornholmer Straße; Bushaltestellen um die Ecke.",
-    mapSlot: "Karten-Embed — erst nach Einwilligung laden",
+    mapTitle: "Karte: 800A Bar, Stettiner Str. 19, Berlin",
+    mapLoad: "Karte anzeigen",
+    mapConsent: "Lädt eine Karte von OpenStreetMap; dabei wird Ihre IP-Adresse an die OpenStreetMap Foundation übertragen.",
+    gmaps: "In Google Maps öffnen", venueSite: "Website der 800A",
+    portalCta: "Alle Termine & Tickets bei {portal}",
+    portalNote: "Online-Tickets sind günstiger als an der Abendkasse.",
     rulesTitle: "Gut zu wissen",
     rules: [
       { text: "Die Show wird komplett auf Englisch gespielt. Deutschkenntnisse sind nicht nötig." },
@@ -834,7 +957,7 @@ const DE = {
   gallery: { tag: "Vom Spielfeld", title: "Fotos & Highlights", slots: [
     { label: "Foto — Teams im Spiel, weit" }, { label: "Foto — Schiedsrichter mit Pfeife" }, { label: "Foto — Publikum stimmt ab" },
     { label: "Foto — Anzeigetafel nah" }, { label: "Video — 30s Highlights" }, { label: "Foto — Team feiert" }
-  ] },
+  ], photo: "Foto", photos: "Fotos", prev: "Vorheriges Foto", next: "Nächstes Foto", close: "Schließen" },
   privTeaser: {
     tag: "Firmen & Privat", title: "Holt das Match zu eurem Event",
     body: "Wir spielen auf Firmenfeiern, Konferenzen, Teamtagen, Festivals und Geburtstagen — drinnen, draußen, auf echten Bühnen und in Meetingräumen. Auf Englisch, auf Deutsch oder zweisprachig.",
@@ -884,13 +1007,12 @@ const DE = {
       { kicker: "Die Teams", title: "Spielen die Spiele", text: "Zwei Teams aus Berlins englischsprachiger Improszene, besetzt aus einem rotierenden Ensemble." },
       { kicker: "Das Publikum", title: "Schreibt und wertet", text: "Eure Vorschläge starten jede Szene, eure Reaktion beendet jede Runde. Ihr steht mit auf dem Spielbericht." }
     ],
-    castTitle: "Das Ensemble",
-    cast: [
-      { slot: "Porträt — Spieler:in", name: "Name der Spielerin", role: "Team Blau · dabei seit 20XX" },
-      { slot: "Porträt — Spieler:in", name: "Name des Spielers", role: "Team Rot · dabei seit 20XX" },
-      { slot: "Porträt — Schiedsrichter", name: "Name Schiedsrichter", role: "Schiedsrichter · Pfeife, Uhr, letztes Wort" },
-      { slot: "Porträt — Spieler:in", name: "Name der Spielerin", role: "Rotierendes Ensemble · Impro & Musik" }
-    ]
+    castTitle: "Das Ensemble", castCta: "Zum ganzen Ensemble"
+  },
+  playersPage: {
+    tag: "Das Ensemble", title: "Lernt das Ensemble kennen",
+    body: "Die Improspieler:innen, Schiedsrichter und Musiker:innen hinter jedem Match. Die Besetzung wechselt — jede Show ist eine neue Mischung.",
+    featured: "Im Rampenlicht", photoSlot: "Porträt — Foto folgt"
   },
   contact: {
     tag: "Kontakt", title: "Sagt Hallo",
@@ -985,10 +1107,42 @@ const CS_WEEKDAYS = {
   en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
   de: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
 };
+// Image/video paths from Pages CMS may start with "/" — make them relative so the
+// site works both on github.io/<repo>/ and on its own domain.
+function csAsset(p) {
+  const v = String(p || "").trim();
+  if (!v) return "";
+  if (/^https?:\/\//i.test(v)) return v;
+  const rel = v.replace(/^\/+/, "");
+  return /%[0-9a-f]{2}/i.test(rel) ? rel : encodeURI(rel);
+}
+function csUrl(v) {
+  const u = String(v || "").trim();
+  return /^https?:\/\//i.test(u) ? u : "";
+}
+// YouTube / Vimeo links become privacy-friendly embeds (loaded on click);
+// .mp4/.webm files uploaded to the repo play directly.
+function csVideo(url) {
+  const u = String(url || "").trim();
+  if (!u) return null;
+  let m = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/i.exec(u);
+  if (m) return { kind: "embed", host: "YouTube", src: "https://www.youtube-nocookie.com/embed/" + m[1] + "?rel=0" };
+  m = /vimeo\.com\/(?:video\/)?(\d+)/i.exec(u);
+  if (m) return { kind: "embed", host: "Vimeo", src: "https://player.vimeo.com/video/" + m[1] + "?dnt=1" };
+  if (/\.(mp4|webm|m4v|mov)(\?|#|$)/i.test(u)) return { kind: "file", src: csAsset(u) };
+  return null;
+}
+function csPick(obj, k, lg) {
+  if (!obj) return "";
+  return (lg === "de" ? obj[k + "_de"] : obj[k + "_en"]) || obj[k + "_en"] || obj[k + "_de"] || obj[k] || "";
+}
+
 // Turns the entries in data/shows.json (edited through Pages CMS) into the
 // display fields the templates use. Past shows are dropped; the rest are sorted by date.
-function csFormatShows(raw, lg, t) {
+function csFormatShows(raw, lg, t, site) {
   if (!Array.isArray(raw)) return [];
+  site = site || {};
+  const portal = csUrl(site.ticket_portal_url);
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const de = lg === "de";
@@ -1003,17 +1157,32 @@ function csFormatShows(raw, lg, t) {
     .sort((a, b) => a.d - b.d)
     .map(({ s, d }) => {
       const pick = (k) => (de ? s[k + "_de"] : s[k + "_en"]) || s[k + "_en"] || s[k + "_de"] || "";
-      let price = has(s.price) ? eur(s.price) : "";
-      if (has(s.price_reduced)) price += (price ? " / " : "") + eur(s.price_reduced) + " " + t.shows.reduced;
+      // price_online / price_door (older entries may still use "price")
+      const online = has(s.price_online) ? s.price_online : (has(s.price) ? s.price : "");
+      const door = has(s.price_door) ? s.price_door : "";
+      let price = "", priceDoor = "";
+      if (has(online)) {
+        price = eur(online) + (has(door) ? " " + t.shows.online : "");
+        if (has(door)) priceDoor = eur(door) + " " + t.shows.door;
+      } else if (has(door)) {
+        price = eur(door) + " " + t.shows.door;
+      }
+      if (has(s.price_reduced)) priceDoor += (priceDoor ? " · " : "") + eur(s.price_reduced) + " " + t.shows.reduced;
       const time = [has(s.doors) ? t.shows.doors + " " + s.doors : "", has(s.start) ? t.shows.show + " " + s.start : ""]
         .filter(Boolean).join(" · ");
-      const url = /^https?:\/\//i.test(String(s.ticket_url || "").trim()) ? String(s.ticket_url).trim() : "";
+      // Show's own ticket page first, otherwise the ticket portal from Site settings
+      const url = csUrl(s.ticket_url) || portal;
+      const venue = s.venue || "";
+      const venueHref = csUrl(s.venue_url) || (/800\s*a/i.test(venue) ? csUrl(site.venue_url) : "");
+      const mapHref = csUrl(s.map_url) || (s.address ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent((venue ? venue + ", " : "") + s.address) : "");
       return {
         weekday: CS_WEEKDAYS[lg][d.getDay()],
         date: d.getDate() + (de ? ". " : " ") + CS_MONTHS[lg][d.getMonth()] + " " + d.getFullYear(),
-        time, price,
+        time, price, priceDoor,
         title: pick("title"), desc: pick("desc"), access: pick("access"),
-        venue: s.venue || "", address: s.address || "",
+        venue, address: s.address || "",
+        hasVenueLink: !!venueHref, noVenueLink: !venueHref, venueHref: venueHref || "#",
+        hasMap: !!mapHref, mapHref: mapHref || "#",
         lang: t.shows.langLine,
         hasTickets: !!url,
         ticketHref: url || "#",
@@ -1027,8 +1196,9 @@ class Component extends DCLogic {
   state = {
     lang: "en", page: "home", faqOpen: 0,
     newsSent: false, enquirySent: false, contactSent: false,
-    cookieChoice: null, cookieOpen: true, scoreA: 4, scoreB: 5,
-    shows: null
+    cookieChoice: null, cookieOpen: true,
+    shows: null, site: null, testimonials: null, players: null, gallery: null,
+    quoteIdx: 0, albumOpen: 0, lightbox: null, videoLoaded: false, mapLoaded: false
   };
 
   componentDidMount() {
@@ -1042,20 +1212,55 @@ class Component extends DCLogic {
       if (c) { next.cookieChoice = c; next.cookieOpen = false; }
       if (Object.keys(next).length) this.setState(next);
     } catch (e) {}
-    this.timer = setInterval(() => {
-      this.setState(s => {
-        const blue = Math.random() > 0.5;
-        let a = s.scoreA + (blue ? 1 : 0), b = s.scoreB + (blue ? 0 : 1);
-        if (a > 9 || b > 9) { a = 0; b = 0; }
-        return { scoreA: a, scoreB: b };
-      });
-    }, 4500);
-    fetch("data/shows.json", { cache: "no-cache" })
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((j) => this.setState({ shows: Array.isArray(j) ? j : (j && j.shows) || [] }))
-      .catch(() => this.setState({ shows: [] }));
+    // Content edited through Pages CMS lives in data/*.json
+    const load = (file, key, pick) =>
+      fetch("data/" + file, { cache: "no-cache" })
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((j) => this.setState({ [key]: pick(j) }))
+        .catch(() => this.setState({ [key]: pick(null) }));
+    const listOf = (k) => (j) => (Array.isArray(j) ? j : (j && Array.isArray(j[k]) ? j[k] : []));
+    load("shows.json", "shows", listOf("shows"));
+    load("site.json", "site", (j) => (j && typeof j === "object" && !Array.isArray(j) ? j : {}));
+    load("testimonials.json", "testimonials", listOf("testimonials"));
+    load("players.json", "players", listOf("players"));
+    load("gallery.json", "gallery", listOf("albums"));
+    this.startQuotes();
+    this.onKey = (e) => {
+      if (!this.state.lightbox) return;
+      if (e.key === "Escape") this.setState({ lightbox: null });
+      if (e.key === "ArrowRight") this.stepPhoto(1);
+      if (e.key === "ArrowLeft") this.stepPhoto(-1);
+    };
+    try { window.addEventListener("keydown", this.onKey); } catch (e) {}
   }
-  componentWillUnmount() { clearInterval(this.timer); }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    try { window.removeEventListener("keydown", this.onKey); } catch (e) {}
+  }
+  startQuotes() {
+    clearInterval(this.timer);
+    this.timer = setInterval(() => this.setState((s) => ({ quoteIdx: s.quoteIdx + 1 })), 7000);
+  }
+  stepQuote(d) {
+    return (e) => {
+      if (e) e.preventDefault();
+      this.setState((s) => ({ quoteIdx: s.quoteIdx + d }));
+      this.startQuotes();
+    };
+  }
+  albumList() {
+    return (this.state.gallery || [])
+      .map((a) => a && { ...a, photos: (Array.isArray(a.photos) ? a.photos : [a.photos]).filter(Boolean) })
+      .filter((a) => a && a.photos.length);
+  }
+  stepPhoto(d) {
+    const lb = this.state.lightbox;
+    if (!lb) return;
+    const al = this.albumList()[lb.a];
+    if (!al) return;
+    const n = al.photos.length;
+    this.setState({ lightbox: { a: lb.a, i: (lb.i + d + n) % n } });
+  }
 
   go(page) {
     return (e) => {
@@ -1080,7 +1285,8 @@ class Component extends DCLogic {
   renderVals() {
     const lg = this.state.lang === "de" ? "de" : "en";
     const base = lg === "de" ? DE : EN;
-    const showList = csFormatShows(this.state.shows, lg, base);
+    const site = this.state.site || {};
+    const showList = csFormatShows(this.state.shows, lg, base, site);
     const t = { ...base, shows: { ...base.shows, list: showList } };
     const L = t.legal;
     const page = this.state.page;
@@ -1091,17 +1297,68 @@ class Component extends DCLogic {
       access: { title: L.accessTitle, blocks: L.access }
     };
     const legal = legalMap[page];
+    const consentAll = this.state.cookieChoice === "all";
+    const stop = (e) => { if (e) e.stopPropagation(); };
+
+    // testimonials (red banner)
+    const quotes = (this.state.testimonials || [])
+      .filter((q) => q && String(q.quote || "").trim())
+      .map((q) => ({ text: String(q.quote).trim(), name: String(q.name || "").trim() }));
+    const qn = quotes.length;
+    const qi = qn ? ((this.state.quoteIdx % qn) + qn) % qn : 0;
+
+    // video from the last show
+    const vid = csVideo(site.video_url);
+    const vidTitle = csPick(site, "video_title", lg) || t.video.title;
+    const embedOn = !!(vid && vid.kind === "embed" && (consentAll || this.state.videoLoaded));
+
+    // players
+    const players = (this.state.players || []).filter((p) => p && String(p.name || "").trim()).map((p) => {
+      const src = csAsset(p.photo);
+      return {
+        name: p.name, role: csPick(p, "role", lg), bio: csPick(p, "bio", lg),
+        src, hasPhoto: !!src, noPhoto: !src, featured: !!p.featured
+      };
+    });
+    const feat = players.filter((p) => p.featured).slice(0, 1);
+    const rest = players.filter((p) => !feat.includes(p));
+
+    // gallery albums
+    const albumsRaw = this.albumList();
+    const albums = albumsRaw.map((a, ai) => {
+      const title = csPick(a, "title", lg);
+      const photos = a.photos.map((ph, pi) => ({
+        src: csAsset(ph), alt: title + " — " + (pi + 1),
+        open: (e) => { if (e) e.preventDefault(); this.setState({ lightbox: { a: ai, i: pi } }); }
+      }));
+      const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(a.date || ""));
+      const when = m ? (+m[3]) + (lg === "de" ? ". " : " ") + CS_MONTHS[lg][+m[2] - 1] + " " + m[1] : "";
+      const open = this.state.albumOpen === ai;
+      return {
+        title, photos, open, expanded: open ? "true" : "false", sign: open ? "–" : "+",
+        meta: [when, photos.length + " " + (photos.length === 1 ? t.gallery.photo : t.gallery.photos)].filter(Boolean).join(" · "),
+        toggle: () => this.setState((s) => ({ albumOpen: s.albumOpen === ai ? -1 : ai }))
+      };
+    });
+    const lb = this.state.lightbox;
+    const lbAlbum = lb && albums[lb.a];
+    const lbPhoto = lbAlbum && lbAlbum.photos[lb.i];
+
+    // ticket portal + venue
+    const portal = csUrl(site.ticket_portal_url);
+    const venueSite = csUrl(site.venue_url);
+
     const pill = (on) => "background:" + (on ? "#EFE2BE" : "transparent") + ";color:" + (on ? "#0C0B09" : "#EFE2BE") + ";border:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;padding:8px 10px;cursor:pointer";
 
     return {
       t,
       isHome: page === "home", isShows: page === "shows", isEvents: page === "events",
-      isAbout: page === "about", isContact: page === "contact", isLegal: !!legal,
+      isAbout: page === "about", isPlayers: page === "players", isContact: page === "contact", isLegal: !!legal,
       legalTitle: legal ? legal.title : "",
       legalBlocks: legal ? legal.blocks : [],
       nav: {
         home: this.go("home"), shows: this.go("shows"), events: this.go("events"),
-        about: this.go("about"), contact: this.go("contact"),
+        about: this.go("about"), players: this.go("players"), contact: this.go("contact"),
         impressum: this.go("impressum"), privacy: this.go("privacy"),
         terms: this.go("terms"), access: this.go("access")
       },
@@ -1113,7 +1370,35 @@ class Component extends DCLogic {
         const el = document.getElementById("format");
         if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 70, behavior: "smooth" });
       },
-      scoreA: this.state.scoreA, scoreB: this.state.scoreB,
+      stop,
+      hasLogo: !!csAsset(site.logo), noLogo: !csAsset(site.logo), logoSrc: csAsset(site.logo),
+      hasQuotes: qn > 0,
+      quoteOne: qn ? [quotes[qi]] : [],
+      quotePos: qn ? (qi + 1) + " / " + qn : "",
+      quotePrev: this.stepQuote(-1), quoteNext: this.stepQuote(1),
+      videoTitle: vidTitle,
+      videoFile: !!(vid && vid.kind === "file"), videoSrc: vid && vid.kind === "file" ? vid.src : "",
+      videoPoster: csAsset(site.video_poster),
+      videoEmbed: embedOn,
+      videoEmbedSrc: embedOn ? vid.src + (this.state.videoLoaded ? "&autoplay=1" : "") : "",
+      videoGate: !!(vid && vid.kind === "embed" && !embedOn),
+      videoConsent: vid && vid.host ? t.video.consent.split("{host}").join(vid.host) : "",
+      videoNone: !vid,
+      loadVideo: (e) => { if (e) e.preventDefault(); this.setState({ videoLoaded: true }); },
+      playersFeatured: feat, playersRest: rest, playersPreview: feat.concat(rest).slice(0, 4),
+      albums, hasAlbums: albums.length > 0, noAlbums: albums.length === 0,
+      lbOpen: !!lbPhoto, lbSrc: lbPhoto ? lbPhoto.src : "", lbAlt: lbPhoto ? lbPhoto.alt : "",
+      lbCaption: lbPhoto ? lbAlbum.title + " · " + (lb.i + 1) + " / " + lbAlbum.photos.length : "",
+      lbPrev: (e) => { stop(e); this.stepPhoto(-1); },
+      lbNext: (e) => { stop(e); this.stepPhoto(1); },
+      lbClose: (e) => { if (e) e.preventDefault(); this.setState({ lightbox: null }); },
+      hasPortal: !!portal, portalHref: portal || "#",
+      portalCta: t.showsPage.portalCta.split("{portal}").join(String(site.ticket_portal_name || "").trim() || "YesTicket"),
+      hasVenueSite: !!venueSite, venueSite: venueSite || "#",
+      gmapsHref: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("800A Bar & Cabaret, Stettiner Str. 19, 13357 Berlin"),
+      mapShow: consentAll || this.state.mapLoaded, mapGate: !(consentAll || this.state.mapLoaded),
+      mapEmbed: "https://www.openstreetmap.org/export/embed.html?bbox=13.3813%2C52.5513%2C13.3933%2C52.5563&layer=mapnik&marker=52.55383%2C13.38733",
+      loadMap: (e) => { if (e) e.preventDefault(); this.setState({ mapLoaded: true }); },
       newsSent: this.state.newsSent, enquirySent: this.state.enquirySent, contactSent: this.state.contactSent,
       submitNews: (e) => { e.preventDefault(); this.setState({ newsSent: true }); },
       submitEnquiry: (e) => { e.preventDefault(); this.setState({ enquirySent: true }); },

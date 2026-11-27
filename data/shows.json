@@ -12,8 +12,8 @@
       "address": "Stettiner Str. 19, 13357 Berlin-Wedding",
       "access_en": "Ground floor · step-free entrance",
       "access_de": "Erdgeschoss · stufenloser Zugang",
-      "price": 14,
-      "price_reduced": 10,
+      "price_online": 12,
+      "price_door": 14,
       "ticket_url": ""
     },
     {
@@ -28,8 +28,8 @@
       "address": "Stettiner Str. 19, 13357 Berlin-Wedding",
       "access_en": "Ground floor · step-free entrance",
       "access_de": "Erdgeschoss · stufenloser Zugang",
-      "price": 14,
-      "price_reduced": 10,
+      "price_online": 12,
+      "price_door": 14,
       "ticket_url": ""
     },
     {
@@ -44,8 +44,8 @@
       "address": "Stettiner Str. 19, 13357 Berlin-Wedding",
       "access_en": "Ground floor · step-free entrance",
       "access_de": "Erdgeschoss · stufenloser Zugang",
-      "price": 14,
-      "price_reduced": 10,
+      "price_online": 12,
+      "price_door": 14,
       "ticket_url": ""
     }
   ]
