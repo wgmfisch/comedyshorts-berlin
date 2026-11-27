@@ -1,5 +1,12 @@
 # Pages CMS configuration — https://pagescms.org/docs/configuration/
-# Lets the team edit the show schedule (data/shows.json) through a form.
+# Gives the team simple forms for everything that changes often.
+# Editing guide for the team: docs/EDITING.md
+
+media:
+  input: uploads
+  output: /uploads
+  rename: safe
+
 content:
   - name: shows
     label: Shows
@@ -53,8 +60,17 @@ content:
             default: 800A Bar
           - name: address
             label: Address
+            description: Also used for the "Map" link on the show card.
             type: string
             default: Stettiner Str. 19, 13357 Berlin-Wedding
+          - name: venue_url
+            label: Venue website (optional)
+            description: Leave empty for 800A — the site then uses the venue link from Site settings.
+            type: string
+          - name: map_url
+            label: Map link (optional)
+            description: Leave empty and the site builds a Google Maps link from the venue and address.
+            type: string
           - name: access_en
             label: Accessibility (English)
             type: string
@@ -63,19 +79,163 @@ content:
             label: Accessibility (German)
             type: string
             default: Erdgeschoss · stufenloser Zugang
-          - name: price
-            label: Price (€)
-            description: Full ticket price in euros, e.g. 14
+          - name: price_online
+            label: Price online / pre-sale (€)
+            description: e.g. 12
             type: number
+            default: 12
+            options:
+              min: 0
+          - name: price_door
+            label: Price at the door (€)
+            description: e.g. 14
+            type: number
+            default: 14
             options:
               min: 0
           - name: price_reduced
-            label: Reduced price (€)
-            description: Optional. Leave empty if there is no reduced price.
+            label: Reduced price (€, optional)
+            description: Leave empty if there is no reduced price.
             type: number
             options:
               min: 0
           - name: ticket_url
-            label: Ticket link
-            description: Full link to the ticket page, starting with https://. While this is empty, the show is listed without a Buy Tickets button.
+            label: Ticket link for this show (optional)
+            description: The show's own YesTicket page, starting with https://. If empty, Buy Tickets goes to the ticket portal from Site settings.
             type: string
+
+  - name: testimonials
+    label: Testimonials
+    type: file
+    path: data/testimonials.json
+    format: json
+    fields:
+      - name: testimonials
+        label: Audience quotes
+        description: Shown one at a time in the red banner on the home page, in this order.
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{name} — {quote}"
+        fields:
+          - name: quote
+            label: Quote
+            description: Shown exactly as typed, in its original language.
+            type: text
+            required: true
+          - name: name
+            label: Name
+            description: First name + initial, e.g. "Eva F."
+            type: string
+
+  - name: players
+    label: Players
+    type: file
+    path: data/players.json
+    format: json
+    fields:
+      - name: players
+        label: Players
+        description: Shown on the Players page in this order. The first four also appear on the About page. Tick "Featured" for the one person shown large at the top.
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{name}"
+        fields:
+          - name: name
+            label: Name
+            type: string
+            required: true
+          - name: photo
+            label: Photo
+            description: Portrait (upright) photos look best. JPG or WEBP, under ~500 KB.
+            type: image
+          - name: role_en
+            label: Role / team (English)
+            type: string
+          - name: role_de
+            label: Role / team (German)
+            type: string
+          - name: bio_en
+            label: Bio (English)
+            type: text
+          - name: bio_de
+            label: Bio (German)
+            description: Leave empty to use the English bio on the German site.
+            type: text
+          - name: featured
+            label: Featured
+            type: boolean
+
+  - name: gallery
+    label: Photo gallery
+    type: file
+    path: data/gallery.json
+    format: json
+    fields:
+      - name: albums
+        label: Albums
+        description: One album per show (or theme). The first album opens automatically on the home page; the others are collapsed.
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{date} — {title_en}"
+        fields:
+          - name: title_en
+            label: Album title (English)
+            type: string
+            required: true
+          - name: title_de
+            label: Album title (German)
+            type: string
+          - name: date
+            label: Date
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: photos
+            label: Photos
+            description: Upload or pick several photos at once. Landscape JPGs, under ~500 KB each.
+            type: image
+            options:
+              multiple:
+                max: 200
+
+  - name: site
+    label: Site settings
+    type: file
+    path: data/site.json
+    format: json
+    fields:
+      - name: logo
+        label: Logo (top left and footer)
+        description: Official logo — transparent PNG or SVG works best on the black header. Leave empty to show the COMEDY / SHORTS text logo.
+        type: image
+      - name: ticket_portal_name
+        label: Ticket portal name
+        type: string
+        default: YesTicket
+      - name: ticket_portal_url
+        label: Ticket portal link
+        description: The page that lists all ComedyShorts dates. Used for the button on the Shows page and for any show without its own ticket link.
+        type: string
+      - name: venue_url
+        label: Venue website (800A)
+        type: string
+      - name: video_url
+        label: Video from the last show
+        description: Paste a YouTube or Vimeo link (unlisted is fine), or upload a short .mp4 to the uploads folder and enter its path, e.g. /uploads/november.mp4. Leave empty to show a placeholder.
+        type: string
+      - name: video_poster
+        label: Video cover image (only for uploaded .mp4)
+        type: image
+      - name: video_title_en
+        label: Video headline (English, optional)
+        description: e.g. "Highlights from November". Leave empty for "See it before you come".
+        type: string
+      - name: video_title_de
+        label: Video headline (German, optional)
+        type: string

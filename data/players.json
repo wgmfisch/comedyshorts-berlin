@@ -1,0 +1,40 @@
+{
+  "players": [
+    {
+      "name": "BK [full name]",
+      "photo": "",
+      "role_en": "[Role, e.g. founder · referee · player since 2005]",
+      "role_de": "[Rolle, z. B. Gründer · Schiedsrichter · dabei seit 2005]",
+      "bio_en": "[Bio — 3 to 5 sentences: how BK started ComedyShorts, favourite games, other shows.]",
+      "bio_de": "[Bio — 3 bis 5 Sätze.]",
+      "featured": true
+    },
+    {
+      "name": "[Player name]",
+      "photo": "",
+      "role_en": "[Team / role · with ComedyShorts since 20XX]",
+      "role_de": "[Team / Rolle · dabei seit 20XX]",
+      "bio_en": "[Short bio — 2 to 3 sentences.]",
+      "bio_de": "[Kurze Bio — 2 bis 3 Sätze.]",
+      "featured": false
+    },
+    {
+      "name": "[Player name]",
+      "photo": "",
+      "role_en": "[Team / role · with ComedyShorts since 20XX]",
+      "role_de": "[Team / Rolle · dabei seit 20XX]",
+      "bio_en": "[Short bio — 2 to 3 sentences.]",
+      "bio_de": "[Kurze Bio — 2 bis 3 Sätze.]",
+      "featured": false
+    },
+    {
+      "name": "[Referee name]",
+      "photo": "",
+      "role_en": "[Referee · whistle, clock, final word]",
+      "role_de": "[Schiedsrichter · Pfeife, Uhr, letztes Wort]",
+      "bio_en": "[Short bio — 2 to 3 sentences.]",
+      "bio_de": "[Kurze Bio — 2 bis 3 Sätze.]",
+      "featured": false
+    }
+  ]
+}
